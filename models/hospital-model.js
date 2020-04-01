@@ -20,6 +20,8 @@ module.exports = (sequelize, type) => {
       funcdependency: type.STRING,
       email: type.STRING,
       hospitalid: type.INTEGER,
+      geometry_lat: type.STRING,
+      geometry_lng: type.STRING,
     },
     {
       timestamps: false,
