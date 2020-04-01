@@ -22,6 +22,7 @@ module.exports = (sequelize, type) => {
       hospitalid: type.INTEGER,
       geometry_lat: type.STRING,
       geometry_lng: type.STRING,
+      status: type.INTEGER,
     },
     {
       timestamps: false,

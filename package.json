@@ -1,0 +1,30 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "api for an app that helps you find the closest non-saturated hospital",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.2",
+    "opencage-api-client": "^0.7.1",
+    "pg-hstore": "^2.3.3",
+    "pg": "^7.18.2",
+    "sequelize": "^5.21.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pluralengine/hospital-monitor-api.git"
+  },
+  "author": "martacolombas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pluralengine/hospital-monitor-api/issues"
+  },
+  "homepage": "https://github.com/pluralengine/hospital-monitor-api#readme"
+}
