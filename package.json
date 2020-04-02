@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "api for an app that helps you find the closest non-saturated hospital",
   "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
@@ -17,9 +21,6 @@
     "node": "10.x"
   },
   "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pluralengine/hospital-monitor-api.git"
