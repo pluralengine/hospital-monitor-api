@@ -1,6 +1,9 @@
+const pg = require('pg');
+pg.defaults.ssl = true;
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(
-  `postgres://${process.env.DB_USER}:${process.env.DB_PWD}@localhost:5432/medrank`
+  `postgres://${process.env.DB_USER}:${process.env.DB_PWD}@${process.env.HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}
+`
 );
 
 sequelize
