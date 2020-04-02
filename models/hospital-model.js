@@ -2,7 +2,7 @@ module.exports = (sequelize, type) => {
   return sequelize.define(
     'hospital',
     {
-      id: {
+      hospitalid: {
         type: type.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -16,10 +16,9 @@ module.exports = (sequelize, type) => {
       postcode: type.INTEGER,
       bednum: type.INTEGER,
       type: type.STRING,
-      typeofdependency: type.STRING,
-      funcdependency: type.STRING,
+      type_of_dependency: type.STRING,
+      func_dependency: type.STRING,
       email: type.STRING,
-      hospitalid: type.INTEGER,
       geometry_lat: type.STRING,
       geometry_lng: type.STRING,
       status: type.INTEGER,

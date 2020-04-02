@@ -8,3 +8,9 @@ exports.findCoordinates = function(address) {
       console.log('error', error.message);
     });
 };
+
+exports.createCompatibleAddress = function(hospital) {
+  return `${hospital.address.split('  ')[0]},${
+    hospital.address.split('  ')[1]
+  },${hospital.areas},${hospital.provinces},${hospital.regionsccaa}, España`;
+};

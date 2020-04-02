@@ -1,8 +1,14 @@
 const Hospital = require('../models/index').Hospital;
-const { findCoordinates } = require('./utils');
+const { findCoordinates, createCompatibleAddress } = require('./utils');
 
 exports.getAllHospitals = function(req, res) {
-  Hospital.findAll().then(hospitals => res.json(hospitals));
+  Hospital.findAll().then(hospitals => {
+    try {
+      res.json(hospitals);
+    } catch (e) {
+      console.error(`Error ${e} happened when trying to fetch hospitals`);
+    }
+  });
 };
 
 exports.createHospital = function(req, res) {
@@ -16,19 +22,41 @@ exports.createHospital = function(req, res) {
     postcode: req.body.postcode,
     bednum: req.body.bednum,
     type: req.body.type,
-    typeofdependency: req.body.typeofdependency,
-    funcdependency: req.body.funcdependency,
+    type_of_dependency: req.body.typeofdependency,
+    func_dependency: req.body.funcdependency,
     email: req.body.email,
-    hospitalid: req.body.hospitalid,
+    hospitalId: req.body.hospitalid,
     status: req.body.status,
   }).then(async function(hospital) {
-    const coord = await utils.findCoordinates(hospital.address);
-    hospital.update({ geometry_lat: coord.lat, geometry_lng: coord.lng });
+    const coord = await findCoordinates(createCompatibleAddress(hospital));
+    hospital
+      .update({ geometry_lat: coord.lat, geometry_lng: coord.lng })
+      .then(hospital => {
+        try {
+          res.status(201);
+          res.json(hospital);
+        } catch (e) {
+          res.status(400);
+          console.error(
+            `Error ${e} happened when trying to create a new hospital`
+          );
+        }
+      });
   });
 };
 
 exports.findHospitalById = function(req, res) {
-  Hospital.findByPk(req.params.id).then(result => res.json(result));
+  const id = req.params.id;
+  Hospital.findByPk(id).then(result => {
+    try {
+      res.status(200);
+      res.json(result);
+    } catch (e) {
+      console.error(
+        `Error ${e} happened when trying to find hospital by ${id}`
+      );
+    }
+  });
 };
 
 exports.changeStatus = async function(req, res) {
@@ -38,5 +66,11 @@ exports.changeStatus = async function(req, res) {
       status: req.body.status,
     },
     { where: { id: id } }
-  ).then(instance => res.json(instance));
+  ).then(instance => {
+    try {
+      res.json(instance);
+    } catch (e) {
+      `Error ${e} happened when trying to update status of ${id}`;
+    }
+  });
 };
