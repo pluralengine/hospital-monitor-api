@@ -3,7 +3,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3000;
+let PORT;
+if (process.env.NODE_ENV === 'production') {
+  PORT = process.env.PORT;
+} else {
+  PORT = 3000;
+}
 const bodyParser = require('body-parser');
 const router = require('./routes/hospital-routes');
 require('./db-config');
@@ -19,7 +24,7 @@ app.use('/hospitals', hospitalsRouter);
 // Listen to port
 
 app.listen(PORT, () =>
-  console.log(`Example app listening on port ${PORT}! 🚀`)
+  console.log(`Hospital-monitor-api listening on port ${PORT}! 🚀`)
 );
 
 // Export router

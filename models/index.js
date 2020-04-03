@@ -7,7 +7,9 @@ const UserModel = require('./user-model');
 
 // MODELS
 const Hospital = HospitalModel(sequelize, Sequelize);
-const User = UserModel(sequelize, Sequelize);
+const User = UserModel(sequelize, Sequelize, Hospital);
+
+// ASSOCIATIONS
 
 Hospital.hasMany(User, { as: 'Users' });
 

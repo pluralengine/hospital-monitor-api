@@ -1,15 +1,21 @@
-module.exports = (sequelize, type) => {
+module.exports = (sequelize, type, ...args) => {
   return sequelize.define(
     'user',
     {
       userid: {
-        type: type.INTEGER,
+        type: type.UUIDV4,
         primaryKey: true,
         autoIncrement: true,
       },
       name: type.STRING,
       email: type.STRING,
-      hospital: type.STRING,
+      hospitalId: {
+        type: type.INTEGER,
+        references: {
+          model: args.Hospital,
+          key: 'hospitalid',
+        },
+      },
       role: type.STRING,
     },
     {
