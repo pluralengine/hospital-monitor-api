@@ -1,4 +1,4 @@
-const User = require('../models/index').User;
+const { User } = require('../models');
 
 exports.getAllUsers = function(req, res) {
   User.findAll().then(users => {
@@ -13,10 +13,10 @@ exports.getAllUsers = function(req, res) {
 exports.createUser = function(req, res) {
   User.create({
     name: req.body.name,
-    email: req.body.address,
-    password: req.body.phonenum,
-    hospitalid: req.body.areas, //TODO handle the case when the hospital is not in the list
-    role: req.body.provinces,
+    email: req.body.email,
+    password: req.body.password,
+    hospitalid: req.body.hospitalid,
+    role: req.body.role,
   }).then(function(user) {
     try {
       res.status(201);

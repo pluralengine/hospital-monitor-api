@@ -11,9 +11,10 @@ const User = UserModel(sequelize, Sequelize, Hospital);
 
 // ASSOCIATIONS
 
-Hospital.hasMany(User, { as: 'Users' });
+User.hasOne(Hospital, { as: 'hospital' });
 
 // MODULES
 module.exports = {
   Hospital,
+  User,
 };

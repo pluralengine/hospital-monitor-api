@@ -20,7 +20,9 @@
   "engines": {
     "node": "10.x"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "sequelize-cli": "^5.5.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pluralengine/hospital-monitor-api.git"

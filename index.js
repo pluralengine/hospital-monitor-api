@@ -3,26 +3,16 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const express = require('express');
 const app = express();
-let PORT;
-if (process.env.NODE_ENV === 'production') {
-  PORT = process.env.PORT;
-} else {
-  PORT = 3000;
-}
-const bodyParser = require('body-parser');
-const router = require('./routes/hospital-routes');
 require('./db-config');
-
-// routes
-const hospitalsRouter = require('./routes/hospital-routes.js');
+const bodyParser = require('body-parser');
+const { router } = require('./routes');
 
 // Middlewares
 app.use(bodyParser.json());
 app.use(router);
-app.use('/hospitals', hospitalsRouter);
 
 // Listen to port
-
+const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT : 3000;
 app.listen(PORT, () =>
   console.log(`Hospital-monitor-api listening on port ${PORT}! 🚀`)
 );
