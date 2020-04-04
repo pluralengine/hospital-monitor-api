@@ -1,2 +1,2 @@
 web: npm start
-release: npm run db:migrate
+release: node_modules/.bin/sequelize db:migrate
