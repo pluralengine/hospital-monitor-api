@@ -37,8 +37,12 @@ exports.createHospital = function(req, res) {
           res.json(hospital);
         } catch (e) {
           res.status(400);
+          const message = e.message;
           console.error(
             `Error ${e} happened when trying to create a new hospital`
+          );
+          throw new Error(
+            `Error ${message} happened when trying to create a new hospital.`
           );
         }
       });
@@ -60,17 +64,24 @@ exports.findHospitalById = function(req, res) {
 };
 
 exports.changeStatus = async function(req, res) {
-  const id = req.params.id;
-  Hospital.update(
-    {
-      status: req.body.status,
-    },
-    { where: { id: id } }
-  ).then(instance => {
+  const hospitalId = req.params.id;
+  const score = req.query.score;
+  const userid = req.query.userid;
+  Score.create({
+    score: score,
+    UserId: userid,
+    HospitalId: hospitalId,
+  }).then(score => {
     try {
-      res.json(instance);
-    } catch (e) {
-      `Error ${e} happened when trying to update status of ${id}`;
+      res.status(200);
+      res.json(score);
+    } catch {
+      res.status(400);
+      const message = e.message;
+      console.error(`Error ${e} happened when trying to create a new hospital`);
+      throw new Error(
+        `Error ${message} happened when trying to send a new hospital status.`
+      );
     }
   });
 };
