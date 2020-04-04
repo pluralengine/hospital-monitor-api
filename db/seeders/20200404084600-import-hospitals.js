@@ -7,7 +7,10 @@ module.exports = {
     const result = hospitals.map(hospital =>
       queryInterface
         .bulkInsert('Hospitals', [hospital])
-        .catch(row => console.log(row))
+        .catch(row => {
+          console.error(`Error creating hospital with name: "${hospital.name}"`)
+          console.error(row)
+        })
     );
     return Promise.all(result);
   },
