@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   Hospital.associate = function(models) {
     Hospital.hasMany(models.User);
+    Hospital.hasMany(models.Score);
   };
   return Hospital;
 };

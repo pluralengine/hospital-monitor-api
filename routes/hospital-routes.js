@@ -1,7 +1,6 @@
 const router = require('./router');
-const hospitalController = require('../controllers/hospital-controller');
+const { hospitalControllers } = require('../controllers');
 
-router.get('/hospitals', hospitalController.getAllHospitals);
-router.get('/hospitals/:id', hospitalController.findHospitalById);
-router.post('/hospitals', hospitalController.createHospital);
-router.put('/hospitals/:id', hospitalController.changeStatus);
+router.get('/hospitals', hospitalControllers.getAllHospitals);
+router.get('/hospitals/:id', hospitalControllers.findHospitalById);
+router.post('/hospitals', hospitalControllers.createHospital);

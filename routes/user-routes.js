@@ -1,5 +1,5 @@
 const router = require('./router');
-const userControllers = require('../controllers/user-controllers');
+const { userControllers } = require('../controllers');
 
 router.get('/users', userControllers.getAllUsers);
 router.get('/users/:id', userControllers.findUserById);

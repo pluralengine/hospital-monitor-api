@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   User.associate = function(models) {
     User.belongsTo(models.Hospital);
+    User.hasMany(models.Score);
   };
   return User;
 };
