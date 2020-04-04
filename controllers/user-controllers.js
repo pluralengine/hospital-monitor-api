@@ -20,7 +20,7 @@ exports.createUser = function(req, res) {
   }).then(function(user) {
     try {
       res.status(201);
-      res.json(`User ${user.id} was created`);
+      res.json(user);
     } catch (e) {
       res.status(400);
       console.error(`Error ${e} happened when trying to create a new hospital`);
