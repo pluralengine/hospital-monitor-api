@@ -3,7 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const express = require('express');
 const app = express();
-require('./db-config');
+require('./db');
 const bodyParser = require('body-parser');
 const { router } = require('./routes');
 
