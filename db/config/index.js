@@ -19,10 +19,6 @@ module.exports = {
     dialect: envDbConfig.driver || 'postgres',
   },
   production: {
-    username: envDbConfig.user || process.env.DB_USER,
-    password: envDbConfig.password || process.env.DB_PWD,
-    database: envDbConfig.database || process.env.DB_NAME,
-    host: envDbConfig.host || process.env.HOST,
-    dialect: envDbConfig.driver || 'postgres',
+    use_env_variable: 'DATABASE_URL',
   },
 };
