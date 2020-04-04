@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   Hospital.associate = function(models) {
-    Hospital.hasMany(models.user);
+    Hospital.hasMany(models.User);
   };
   return Hospital;
 };

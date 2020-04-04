@@ -1,4 +1,4 @@
-const { Hospital } = require('../models');
+const { Hospital } = require('../db/models');
 const { findCoordinates, createCompatibleAddress } = require('./utils');
 
 exports.getAllHospitals = function(req, res) {

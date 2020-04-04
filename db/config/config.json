@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "medrank",
-    "password": "AguaYAceite4!",
+    "password": null,
     "database": "hospital-monitor",
     "host": "localhost",
     "dialect": "postgres",

@@ -6,64 +6,64 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       address: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       phoneNum: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       areas: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       provinces: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       regionsCcaa: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       postcode: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       bedNum: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       type: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       dependencyType: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       funcDependency: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       geometryLat: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       geometryLng: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       status: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Hospitals');
-  }
+  },
 };
