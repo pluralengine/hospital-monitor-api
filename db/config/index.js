@@ -1,23 +1,29 @@
+var parseDbUrl = require('parse-database-url');
+var envDbConfig = process.env.DATABASE_URL
+  ? parseDbUrl(process.env.DATABASE_URL)
+  : {};
+
+console.log(envDbConfig);
 module.exports = {
   development: {
-    username: 'medrank',
-    password: null,
-    database: 'hospital-monitor',
-    host: 'localhost',
-    dialect: 'postgres',
+    username: envDbConfig.dialect || 'medrank',
+    password: envDbConfig.password || null,
+    database: envDbConfig.database || 'hospital-monitor',
+    host: envDbConfig.host || 'localhost',
+    dialect: envDbConfig.dialect || 'postgres',
   },
   test: {
-    username: 'medrank-test',
-    password: null,
-    database: 'hospital-monitor-test',
-    host: 'localhost',
-    dialect: 'postgres',
+    username: envDbConfig.user || process.env.DB_USER,
+    password: envDbConfig.password || process.env.DB_PWD,
+    database: envDbConfig.database || process.env.DB_NAME,
+    host: envDbConfig.host || process.env.HOST,
+    dialect: envDbConfig.dialect || 'postgres',
   },
   production: {
-    username: process.env.DB_USER,
-    password: process.env.DB_PW,
-    database: process.env.DB_NAME,
-    host: process.env.HOST,
-    dialect: 'postgres',
+    username: envDbConfig.user || process.env.DB_USER,
+    password: envDbConfig.password || process.env.DB_PWD,
+    database: envDbConfig.database || process.env.DB_NAME,
+    host: envDbConfig.host || process.env.HOST,
+    dialect: envDbConfig.dialect || 'postgres',
   },
 };

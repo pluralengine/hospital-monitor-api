@@ -8,14 +8,14 @@ if (process.env.NODE_ENV === 'production') {
   pg.defaults.ssl = false;
 }
 
-const { username, password, database, host, dialect } =
-  config[process.env.NODE_ENV] || {};
-const dbUrl = `${dialect}://${username}:${password}@${host}:5432/${database}`;
-
-
 module.exports = {
   init: function () {
-    console.log(`Connecting to ${dbUrl}...`);
+    const env = process.env.NODE_ENV || 'development';
+    const { username, password, database, host, dialect } = config[env] || {};
+    const dbUrl =
+      process.env.DATABASE_URL ||
+      `${dialect}://${username}:${password}@${host}:5432/${database}`;
+
     const sequelize = new Sequelize(dbUrl);
 
     sequelize
