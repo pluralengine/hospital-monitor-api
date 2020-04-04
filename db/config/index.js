@@ -5,7 +5,6 @@ module.exports = {
     database: 'hospital-monitor',
     host: 'localhost',
     dialect: 'postgres',
-    operatorsAliases: false,
   },
   test: {
     username: 'medrank-test',
@@ -13,7 +12,6 @@ module.exports = {
     database: 'hospital-monitor-test',
     host: 'localhost',
     dialect: 'postgres',
-    operatorsAliases: false,
   },
   production: {
     username: process.env.DB_USER,
@@ -21,6 +19,5 @@ module.exports = {
     database: process.env.DB_NAME,
     host: process.env.HOST,
     dialect: 'postgres',
-    operatorsAliases: false,
   },
 };
