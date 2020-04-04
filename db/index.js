@@ -16,7 +16,6 @@ module.exports = {
       process.env.DATABASE_URL ||
       `${dialect}://${username}:${password}@${host}:5432/${database}`;
 
-    console.log(`Connecting to ${dbUrl}...`);
     const sequelize = new Sequelize(dbUrl);
 
     sequelize
