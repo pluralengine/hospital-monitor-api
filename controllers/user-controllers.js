@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User } = require('../db/models');
 
 exports.getAllUsers = function(req, res) {
   User.findAll().then(users => {
@@ -15,12 +15,12 @@ exports.createUser = function(req, res) {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    hospitalid: req.body.hospitalid,
+    HospitalId: req.body.hospitalId,
     role: req.body.role,
   }).then(function(user) {
     try {
       res.status(201);
-      res.json(`User ${user.userid} was created`);
+      res.json(user);
     } catch (e) {
       res.status(400);
       console.error(`Error ${e} happened when trying to create a new hospital`);
