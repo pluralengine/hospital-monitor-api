@@ -5,18 +5,23 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const hospitals = parseHospitals(data);
     const result = hospitals.map(hospital =>
-      queryInterface
-        .bulkInsert('Hospitals', [hospital])
-        .catch(row => {
-          console.error(`Error creating hospital with name: "${hospital.name}"`)
-          console.error(row)
-        })
+      queryInterface.bulkInsert('Hospitals', [hospital]).catch(row => {
+        console.error(`Error creating hospital with name: "${hospital.name}"`);
+        console.error(row);
+      })
     );
+
     return Promise.all(result);
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Hospitals', null, {});
+    const hospitals = parseHospitals(data);
+
+    return queryInterface.bulkDelete(
+      'Hospitals',
+      { name: { [Op.in]: hospitals.map(hospital => hospital.name) } },
+      {}
+    );
   },
 };
 
