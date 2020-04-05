@@ -8,12 +8,10 @@ module.exports = {
         model: 'Hospitals',
         key: 'id',
       },
-      allowNull: false,
       onDelete: 'SET NULL',
     });
     await queryInterface.addColumn('Users', 'password', {
       type: Sequelize.STRING,
-      allowNull: false,
       onDelete: 'SET NULL',
     });
   },

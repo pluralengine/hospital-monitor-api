@@ -22,4 +22,4 @@ app.listen(PORT, () =>
 
 // Export router
 
-module.exports = { app };
+module.exports = app;

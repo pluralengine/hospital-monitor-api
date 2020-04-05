@@ -5,7 +5,7 @@ exports.findCoordinates = function(address) {
     .geocode({ q: address })
     .then(results => results.results[0].geometry)
     .catch(error => {
-      console.log('error', error.message);
+      console.error(error);
     });
 };
 

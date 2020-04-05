@@ -12,10 +12,10 @@ module.exports = {
     dialect: envDbConfig.driver || 'postgres',
   },
   test: {
-    username: envDbConfig.user || process.env.DB_USER,
-    password: envDbConfig.password || process.env.DB_PWD,
-    database: envDbConfig.database || process.env.DB_NAME,
-    host: envDbConfig.host || process.env.HOST,
+    username: envDbConfig.user || 'medrank',
+    password: envDbConfig.password || null,
+    database: envDbConfig.database || 'hospital-monitor-test',
+    host: envDbConfig.host || 'localhost',
     dialect: envDbConfig.driver || 'postgres',
   },
   production: {

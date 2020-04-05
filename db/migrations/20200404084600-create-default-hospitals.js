@@ -19,7 +19,7 @@ module.exports = {
 
     return queryInterface.bulkDelete(
       'Hospitals',
-      { name: { [Op.in]: hospitals.map(hospital => hospital.name) } },
+      { name: { [Sequelize.Op.in]: hospitals.map(hospital => hospital.name) } },
       {}
     );
   },
