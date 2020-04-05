@@ -37,13 +37,9 @@ exports.createHospital = function(req, res) {
           res.json(hospital);
         } catch (e) {
           res.status(400);
-          const message = e.message;
-          console.error(
-            `Error ${e} happened when trying to create a new hospital`
-          );
-          throw new Error(
-            `Error ${message} happened when trying to create a new hospital.`
-          );
+          e.message = `Error happened when trying to create a new hospital. \n ${e.message}`;
+          
+          throw e;
         }
       });
   });

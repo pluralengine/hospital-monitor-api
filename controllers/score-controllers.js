@@ -5,6 +5,7 @@ exports.sendHospitalScore = function(req, res) {
   const hospitalId = req.query.hospitalId;
   const score = req.query.score;
   const userid = req.query.userId;
+  
   Score.create({
     rate: score,
     UserId: userid,
@@ -17,6 +18,7 @@ exports.sendHospitalScore = function(req, res) {
           HospitalId: hospitalId,
           createdAt: {
             [Op.lt]: new Date(),
+            // last 15 min records
             [Op.gt]: new Date(new Date() - 15 * 60 * 1000),
           },
         },
@@ -27,6 +29,7 @@ exports.sendHospitalScore = function(req, res) {
           0
         );
         const avgScore = Math.round(sumScores / readableScores.length);
+
         Hospital.findByPk(hospitalId).then(hospital => {
           try {
             hospital
@@ -50,8 +53,8 @@ exports.sendHospitalScore = function(req, res) {
       console.error(
         `Error ${e} happened when trying to send a new hospital status.`
       );
-      throw new Error(
-        `Error ${message} happened when trying to send a new hospital status.`
+      res.text(
+        `Error happened when trying to send a new hospital status; \n  ${message}`
       );
     }
   });
