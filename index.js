@@ -6,6 +6,7 @@ const app = express();
 const db = require('./db');
 const bodyParser = require('body-parser');
 const { router } = require('./routes');
+const jwt = require('jsonwebtoken');
 
 // Database
 db.init();

@@ -1,15 +1,5 @@
 const { User } = require('../db/models');
 
-exports.getAllUsers = function (req, res) {
-  User.findAll().then(users => {
-    try {
-      res.json(users);
-    } catch (e) {
-      console.error(`Error ${e} happened when trying to fetch users`);
-    }
-  });
-};
-
 exports.createUser = function (req, res) {
   User.create({
     name: req.body.name,
@@ -17,11 +7,10 @@ exports.createUser = function (req, res) {
     password: req.body.password,
     HospitalId: req.body.hospitalId,
     role: req.body.role,
-  })
-    .then((user) => {
-      res.status(201);
-      res.json(user);
-    })
+  }).then(user => {
+    res.status(201);
+    res.json(user);
+  });
 };
 
 exports.findUserById = function (req, res) {
