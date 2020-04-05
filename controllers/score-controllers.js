@@ -5,13 +5,12 @@ exports.sendHospitalScore = function(req, res) {
   const hospitalId = req.query.hospitalId;
   const score = req.query.score;
   const userid = req.query.userId;
-  
+
   Score.create({
     rate: score,
     UserId: userid,
     HospitalId: hospitalId,
   }).then(() => {
-    try {
       const Op = Sequelize.Op;
       Score.findAll({
         where: {
@@ -23,12 +22,12 @@ exports.sendHospitalScore = function(req, res) {
           },
         },
       }).then(scores => {
-        const readableScores = scores.map(score => score.toJSON());
-        const sumScores = readableScores.reduce(
+        const lastScores = scores.map(score => score.toJSON());
+        const sumScores = lastScores.reduce(
           (acc, score) => acc + score.rate,
           0
         );
-        const avgScore = Math.round(sumScores / readableScores.length);
+        const avgScore = Math.round(sumScores / lastScores.length);
 
         Hospital.findByPk(hospitalId).then(hospital => {
           try {
@@ -44,10 +43,10 @@ exports.sendHospitalScore = function(req, res) {
             console.error(
               `Error ${e} happened after trying to update hospital status in Hospitals`
             );
+            throw e;
           }
         });
-      });
-    } catch (e) {
+      }).catch (e) {
       res.status(500);
       const message = e.message;
       console.error(
