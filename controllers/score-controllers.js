@@ -1,9 +1,10 @@
 const { Hospital, Score } = require('../db/models');
+const Sequelize = require('sequelize');
 
 exports.sendHospitalScore = function(req, res) {
-  const hospitalId = req.params.id;
+  const hospitalId = req.query.hospitalId;
   const score = req.query.score;
-  const userid = req.query.userid;
+  const userid = req.query.userId;
   Score.create({
     rate: score,
     UserId: userid,
@@ -19,14 +20,18 @@ exports.sendHospitalScore = function(req, res) {
             [Op.gt]: new Date(new Date() - 15 * 60 * 1000),
           },
         },
-      }).then(async scores => {
-        const status =
-          (await scores.reduce((a, b) => a.rate + b.rate, 0)) / scores.length;
+      }).then(scores => {
+        const readableScores = scores.map(score => score.toJSON());
+        const sumScores = readableScores.reduce(
+          (acc, score) => acc + score.rate,
+          0
+        );
+        const avgScore = Math.round(sumScores / readableScores.length);
         Hospital.findByPk(hospitalId).then(hospital => {
           try {
             hospital
               .update({
-                status: status,
+                status: avgScore,
               })
               .then(() => {
                 res.status(200);
