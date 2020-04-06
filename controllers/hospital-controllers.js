@@ -37,9 +37,9 @@ exports.createHospital = function(req, res) {
           res.json(hospital);
         } catch (e) {
           res.status(400);
-          console.error(
-            `Error ${e} happened when trying to create a new hospital`
-          );
+          e.message = `Error happened when trying to create a new hospital. \n ${e.message}`;
+          
+          throw e;
         }
       });
   });
@@ -47,30 +47,14 @@ exports.createHospital = function(req, res) {
 
 exports.findHospitalById = function(req, res) {
   const id = req.params.id;
-  Hospital.findByPk(id).then(result => {
+  Hospital.findByPk(id).then(hospital => {
     try {
       res.status(200);
-      res.json(result);
+      res.json(hospital);
     } catch (e) {
       console.error(
         `Error ${e} happened when trying to find hospital by ${id}`
       );
-    }
-  });
-};
-
-exports.changeStatus = async function(req, res) {
-  const id = req.params.id;
-  Hospital.update(
-    {
-      status: req.body.status,
-    },
-    { where: { id: id } }
-  ).then(instance => {
-    try {
-      res.json(instance);
-    } catch (e) {
-      `Error ${e} happened when trying to update status of ${id}`;
     }
   });
 };
