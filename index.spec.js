@@ -2,6 +2,9 @@ const request = require('supertest');
 const app = require('./index');
 const { User, Hospital } = require('./db/models');
 
+jest.mock('./controllers/utils');
+const { findCoordinates } = require('./controllers/utils');
+
 describe('/users', () => {
   const endpoint = '/users';
   let user = {};
@@ -71,34 +74,36 @@ describe('/hospitals', () => {
     await Hospital.destroy({ where: {}, truncate: true, cascade: true });
   });
 
-  beforeEach(async () => {
-    hospital = await Hospital.create({
-      name: 'Plural Engine Hospital',
-      address: 'C/ Pau Alsina 123',
-      phonenum: 680178921,
-      areas: 'Barcelona',
-      provinces: 'Barcelona',
-      regionsccaa: 'BARCELONA',
-      postcode: '08024',
-      bednum: 100,
-      type: 'PSIQUIÁTRICO',
-      type_of_dependency: 'COMUNIDAD AUTÓNOMA',
-      func_dependency: 'SERVICIO VASCO DE SALUD-OSAKIDETZA',
-      email: 'pluralengine@gmail.com',
-    });
-  });
-
-  afterEach(async () => {
-    await hospital.destroy();
-  });
-
   describe('GET', () => {
+    beforeEach(async () => {
+      hospital = await Hospital.create({
+        name: 'Plural Engine Hospital',
+        address: 'C/ Pau Alsina 123',
+        phoneNum: '680178921',
+        areas: 'Barcelona',
+        provinces: 'Barcelona',
+        regionsCcaa: 'BARCELONA',
+        postcode: '08024',
+        bedNum: 100,
+        type: 'PSIQUIÁTRICO',
+        dependencyType: 'COMUNIDAD AUTÓNOMA',
+        funcDependency: 'SERVICIO VASCO DE SALUD-OSAKIDETZA',
+        email: 'pluralengine@gmail.com',
+        geometryLat: 1234,
+        geometryLng: 1234,
+      });
+    });
+
+    afterEach(async () => {
+      await hospital.destroy();
+    });
+
     it('should respond to the GET method', async () => {
       const res = await request(app).get(endpoint);
 
       expect(res.statusCode).toBe(200);
       expect(res.body.length).toBe(1);
-      expect(res.body[0]).toBe({
+      expect(res.body[0]).toEqual({
         address: 'C/ Pau Alsina 123',
         areas: 'Barcelona',
         bedNum: 100,
@@ -106,11 +111,11 @@ describe('/hospitals', () => {
         dependencyType: 'COMUNIDAD AUTÓNOMA',
         email: 'pluralengine@gmail.com',
         funcDependency: 'SERVICIO VASCO DE SALUD-OSAKIDETZA',
-        geometryLat: null,
-        geometryLng: null,
+        geometryLat: '1234',
+        geometryLng: '1234',
         id: expect.any(Number),
         name: 'Plural Engine Hospital',
-        phoneNum: 680178921,
+        phoneNum: '680178921',
         postcode: 8024,
         provinces: 'Barcelona',
         regionsCcaa: 'BARCELONA',
@@ -121,27 +126,39 @@ describe('/hospitals', () => {
     });
   });
 
-  xdescribe('POST', () => {
-    it('should create a new hospital', async () => {
-      const payload = {
-        address: 'C/ Pau Alsina 123',
-        areas: 'Barcelona',
-        bedNum: 100,
-        dependencyType: 'COMUNIDAD AUTÓNOMA',
-        email: 'pluralengine@gmail.com',
-        funcDependency: 'SERVICIO VASCO DE SALUD-OSAKIDETZA',
-        name: 'Plural Engine Hospital',
-        phoneNum: 680178921,
-        postcode: 8024,
-        provinces: 'Barcelona',
-        regionsCcaa: 'BARCELONA',
-        type: 'PSIQUIÁTRICO',
-      };
+  describe('POST', () => {
+    beforeEach(async () => {
+      await Hospital.destroy({ where: {}, truncate: true, cascade: true });
+      jest.resetAllMocks();
+      findCoordinates.mockResolvedValue(
+        Promise.resolve({ lat: 1234, lng: 1234 })
+      );
+    });
 
+    afterEach(async () => {
+      await Hospital.destroy({ where: {}, truncate: true, cascade: true });
+    });
+
+    const payload = {
+      address: 'C/ Pau Alsina 123',
+      areas: 'Barcelona',
+      bedNum: 100,
+      dependencyType: 'COMUNIDAD AUTÓNOMA',
+      email: 'pluralengine@gmail.com',
+      funcDependency: 'SERVICIO VASCO DE SALUD-OSAKIDETZA',
+      name: 'Plural Engine Hospital',
+      phoneNum: '680178921',
+      postcode: 8024,
+      provinces: 'Barcelona',
+      regionsCcaa: 'BARCELONA',
+      type: 'PSIQUIÁTRICO',
+    };
+
+    it('should create a new hospital', async () => {
       const res = await request(app).post(endpoint).send(payload);
 
       expect(res.statusCode).toEqual(201);
-      expect(res.body).toMatchObject({
+      expect(res.body).toEqual({
         address: 'C/ Pau Alsina 123',
         areas: 'Barcelona',
         bedNum: 100,
@@ -153,7 +170,7 @@ describe('/hospitals', () => {
         geometryLng: null,
         id: expect.any(Number),
         name: 'Plural Engine Hospital',
-        phoneNum: 680178921,
+        phoneNum: '680178921',
         postcode: 8024,
         provinces: 'Barcelona',
         regionsCcaa: 'BARCELONA',
@@ -161,6 +178,12 @@ describe('/hospitals', () => {
         type: 'PSIQUIÁTRICO',
         updatedAt: expect.any(String),
       });
+    });
+
+    it('should call findCoordinates', async () => {
+      await request(app).post(endpoint).send(payload);
+
+      expect(findCoordinates).toHaveBeenCalled();
     });
   });
 });

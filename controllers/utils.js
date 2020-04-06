@@ -10,7 +10,5 @@ exports.findCoordinates = function(address) {
 };
 
 exports.createCompatibleAddress = function(hospital) {
-  return `${hospital.address.split('  ')[0]},${
-    hospital.address.split('  ')[1]
-  },${hospital.areas},${hospital.provinces},${hospital.regionsccaa}, España`;
+  return `${hospital.name}, ${hospital.areas}, España`;
 };

@@ -15,18 +15,16 @@ exports.createHospital = function(req, res) {
   Hospital.create({
     name: req.body.name,
     address: req.body.address,
-    phonenum: req.body.phonenum,
+    phoneNum: req.body.phoneNum,
     areas: req.body.areas,
     provinces: req.body.provinces,
-    regionsccaa: req.body.regionsccaa,
+    regionsCcaa: req.body.regionsCcaa,
     postcode: req.body.postcode,
-    bednum: req.body.bednum,
+    bedNum: req.body.bedNum,
     type: req.body.type,
-    type_of_dependency: req.body.typeofdependency,
-    func_dependency: req.body.funcdependency,
+    dependencyType: req.body.dependencyType,
+    funcDependency: req.body.funcDependency,
     email: req.body.email,
-    hospitalId: req.body.hospitalid,
-    status: req.body.status,
   }).then(async function(hospital) {
     const coord = await findCoordinates(createCompatibleAddress(hospital));
     hospital
