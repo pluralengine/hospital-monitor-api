@@ -1,9 +1,23 @@
-const request = require('supertest');
+const supertest = require('supertest');
 const app = require('./index');
+const http = require('http');
 const { User, Hospital } = require('./db/models');
 
 jest.mock('./controllers/utils');
 const { findCoordinates } = require('./controllers/utils');
+
+let server;
+let request;
+
+beforeEach(done => {
+  server = http.createServer(app);
+  server.listen(done);
+  request = supertest(server);
+});
+
+afterEach(done => {
+  server.close(done);
+});
 
 describe('/users', () => {
   const endpoint = '/users';
@@ -44,7 +58,7 @@ describe('/users', () => {
         role: 'Engineer',
       };
 
-      const res = await request(app).post(endpoint).send(payload);
+      const res = await request.post(endpoint).send(payload);
 
       expect(res.statusCode).toEqual(201);
       expect(res.body).toMatchObject({
@@ -59,7 +73,7 @@ describe('/users', () => {
 
   describe('GET', () => {
     it('should respond to the GET method', async () => {
-      const res = await request(app).get(endpoint);
+      const res = await request.get(endpoint);
 
       expect(res.statusCode).toBe(200);
     });
@@ -99,7 +113,7 @@ describe('/hospitals', () => {
     });
 
     it('should respond to the GET method', async () => {
-      const res = await request(app).get(endpoint);
+      const res = await request.get(endpoint);
 
       expect(res.statusCode).toBe(200);
       expect(res.body.length).toBe(1);
@@ -155,7 +169,7 @@ describe('/hospitals', () => {
     };
 
     it('should create a new hospital', async () => {
-      const res = await request(app).post(endpoint).send(payload);
+      const res = await request.post(endpoint).send(payload);
 
       expect(res.statusCode).toEqual(201);
       expect(res.body).toEqual({
@@ -181,7 +195,7 @@ describe('/hospitals', () => {
     });
 
     it('should call findCoordinates', async () => {
-      await request(app).post(endpoint).send(payload);
+      await request.post(endpoint).send(payload);
 
       expect(findCoordinates).toHaveBeenCalled();
     });

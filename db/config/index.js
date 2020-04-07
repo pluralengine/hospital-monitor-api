@@ -17,6 +17,7 @@ module.exports = {
     database: envDbConfig.database || 'hospital-monitor-test',
     host: envDbConfig.host || 'localhost',
     dialect: envDbConfig.driver || 'postgres',
+    logging: false,
   },
   production: {
     use_env_variable: 'DATABASE_URL',
