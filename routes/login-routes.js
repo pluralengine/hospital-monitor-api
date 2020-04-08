@@ -1,4 +1,4 @@
 const router = require('./router');
-const loginController = require('../controllers/login-controller');
+const { loginControllers } = require('../controllers');
 
-router.post('/login', loginController.login);
+router.post('/login', loginControllers.login);

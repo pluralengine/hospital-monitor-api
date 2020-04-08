@@ -201,3 +201,51 @@ describe('/hospitals', () => {
     });
   });
 });
+
+describe('/login', () => {
+  const endpoint = '/login';
+  let user = {};
+  let hospital = {};
+
+  beforeAll(async () => {
+    hospital = await Hospital.create({
+      name: 'Plural Engine Hospital',
+      address: 'Lolipop street',
+      phonenum: 680178921,
+      areas: 'Barcelona',
+      provinces: 'Barcelona',
+      regionsccaa: 'BARCELONA',
+      postcode: '08024',
+      bednum: 100,
+      type: 'PSIQUIÁTRICO',
+      type_of_dependency: 'COMUNIDAD AUTÓNOMA',
+      func_dependency: 'SERVICIO VASCO DE SALUD-OSAKIDETZA',
+      email: 'pluralengine@gmail.com',
+    });
+    user = await User.create({
+      name: 'Marta Colombas',
+      email: 'martacolombas@gmail.com',
+      role: 'Celadora',
+      password: 'pass',
+      HospitalId: hospital.id,
+    });
+  });
+
+  describe('POST', () => {
+    it('should return a token in the response body', async () => {
+      const payload = {
+        email: 'martacolombas@gmail.com',
+        password: 'pass',
+      };
+      const res = await request.post(endpoint).send(payload);
+
+      expect(res.statusCode).toEqual(202);
+      expect(res.body).toMatchObject({
+        name: 'Marta Colombas',
+        email: 'martacolombas@gmail.com',
+        role: 'Celadora',
+        token: expect.any(String),
+      });
+    });
+  });
+});
