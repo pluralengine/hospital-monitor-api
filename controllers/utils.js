@@ -5,12 +5,10 @@ exports.findCoordinates = function(address) {
     .geocode({ q: address })
     .then(results => results.results[0].geometry)
     .catch(error => {
-      console.log('error', error.message);
+      console.error(error);
     });
 };
 
 exports.createCompatibleAddress = function(hospital) {
-  return `${hospital.address.split('  ')[0]},${
-    hospital.address.split('  ')[1]
-  },${hospital.areas},${hospital.provinces},${hospital.regionsccaa}, España`;
+  return `${hospital.name}, ${hospital.areas}, España`;
 };

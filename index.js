@@ -16,10 +16,12 @@ app.use(router);
 
 // Listen to port
 const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT : 3000;
-app.listen(PORT, () =>
-  console.log(`Hospital-monitor-api listening on port ${PORT}! 🚀`)
-);
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () =>
+    console.log(`Hospital-monitor-api listening on port ${PORT}! 🚀`)
+  );
+}
 
 // Export router
 
-module.exports = { app };
+module.exports = app;
