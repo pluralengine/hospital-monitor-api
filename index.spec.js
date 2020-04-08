@@ -27,7 +27,7 @@ describe('/users', () => {
   beforeAll(async () => {
     hospital = await Hospital.create({
       name: 'Plural Engine Hospital',
-      address: 'C/ Pau Alsina 123',
+      address: 'Lolipop street',
       phonenum: 680178921,
       areas: 'Barcelona',
       provinces: 'Barcelona',
