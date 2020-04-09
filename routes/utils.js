@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 exports.authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -14,6 +16,6 @@ exports.authenticateJWT = (req, res, next) => {
     });
   } else {
     res.status(403);
-    return res.send('Not allowed');
+    res.json('Not allowed');
   }
 };

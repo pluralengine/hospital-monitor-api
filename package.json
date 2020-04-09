@@ -7,8 +7,8 @@
     "start": "node index.js",
     "db:migrate": "sequelize db:migrate",
     "db:migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run db:migrate",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
-    "test:watch": "npm test -- --watch",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000 --detectOpenHandles",
+    "test:watch": "npm test -- --watch --detectOpenHandles",
     "pretest": "cross-env NODE_ENV=test npm run db:migrate:reset"
   },
   "dependencies": {
@@ -42,11 +42,5 @@
   "bugs": {
     "url": "https://github.com/pluralengine/hospital-monitor-api/issues"
   },
-  "homepage": "https://github.com/pluralengine/hospital-monitor-api#readme",
-  "jest": {
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ]
-  }
+  "homepage": "https://github.com/pluralengine/hospital-monitor-api#readme"
 }
