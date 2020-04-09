@@ -2,19 +2,17 @@ const { Hospital, Score } = require('../db/models');
 const Sequelize = require('sequelize');
 
 exports.sendHospitalScore = function (req, res) {
-  const hospitalId = req.query.hospitalId;
-  const score = req.query.score;
-  const userid = req.query.userId;
+  const {rate, UserId, HospitalId} = deserializeScore(req.body)
 
   Score.create({
-    rate: score,
-    UserId: userid,
-    HospitalId: hospitalId,
-  }).then(() => {
+    rate,
+    UserId,
+    HospitalId,
+  }).then(score => {
     const Op = Sequelize.Op;
     Score.findAll({
       where: {
-        HospitalId: hospitalId,
+        HospitalId,
         createdAt: {
           [Op.lt]: new Date(),
           // last 15 min records
@@ -30,15 +28,15 @@ exports.sendHospitalScore = function (req, res) {
         );
         const avgScore = Math.round(sumScores / readableScores.length);
 
-        Hospital.findByPk(hospitalId).then(hospital => {
+        Hospital.findByPk(HospitalId).then(hospital => {
           try {
             hospital
               .update({
                 status: avgScore,
               })
               .then(() => {
-                res.status(200);
-                res.json(score);
+                res.status(201);
+                res.json(serializeScore(score));
               });
           } catch (e) {
             console.error(
@@ -53,9 +51,30 @@ exports.sendHospitalScore = function (req, res) {
         console.error(
           `Error ${e} happened when trying to send a new hospital status.`
         );
-        res.text(
+        res.json(
           `Error happened when trying to send a new hospital status; \n  ${message}`
         );
       });
   });
 };
+
+// From Internal to API payload
+function serializeScore(score) {
+  return {
+    hospitalId: score.HospitalId,
+    userId: score.UserId,
+    createdAt: score.createdAt,
+    id: score.id,
+    score: score.rate,
+    updatedAt: score.updatedAt,
+  };
+}
+
+// From API payload to Internal
+function deserializeScore(score) {
+  return {
+    HospitalId: score.hospitalId,
+    UserId: score.userId,
+    rate: score.score,
+  };
+}

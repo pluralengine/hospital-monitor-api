@@ -2,7 +2,7 @@ const supertest = require('supertest');
 const app = require('./index');
 const http = require('http');
 const jwt = require('jsonwebtoken');
-const { User, Hospital } = require('./db/models');
+const { User, Hospital, Score } = require('./db/models');
 
 jest.mock('./controllers/utils');
 const { findCoordinates } = require('./controllers/utils');
@@ -228,6 +228,67 @@ describe('/login', () => {
         email: 'martacolombas@gmail.com',
         role: 'Celadora',
         token: expect.any(String),
+      });
+    });
+  });
+});
+
+describe('/score', () => {
+  const endpoint = '/score';
+
+  describe('POST', () => {
+    beforeEach(async () => {
+      await Score.destroy({ where: {}, truncate: true, cascade: true });
+
+      jest.resetAllMocks();
+    });
+
+    afterEach(async () => {
+      await Score.destroy({ where: {}, truncate: true, cascade: true });
+    });
+
+    describe('user is authenticated', () => {
+      it('should create a new score', async () => {
+        const hospital = await createHospital();
+        const user = await createUser();
+        const accessToken = await generateAccessToken();
+        const payload = {
+          userId: user.id,
+          hospitalId: hospital.id,
+          score: 5,
+        };
+        const res = await request
+          .post(endpoint)
+          .set('Authorization', `Bearer ${accessToken}`)
+          .send(payload);
+        await hospital.reload();
+
+        expect(res.statusCode).toEqual(201);
+        expect(res.body).toEqual({
+          createdAt: expect.any(String),
+          hospitalId: payload.hospitalId,
+          score: payload.score,
+          id: expect.any(Number),
+          updatedAt: expect.any(String),
+          userId: payload.userId,
+        });
+        expect(hospital.status).toBe(5);
+      });
+    });
+
+    describe('user is NOT authenticated', () => {
+      it('should NOT allow to create a hospital', async () => {
+        const hospital = await createHospital();
+        const user = await createUser();
+        const payload = {
+          userId: user.id,
+          hospitalId: hospital.id,
+          score: 1,
+        };
+        const res = await request.post(endpoint).send(payload);
+
+        expect(res.statusCode).toEqual(403);
+        expect(res.body).toEqual('Not allowed');
       });
     });
   });
