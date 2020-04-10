@@ -1,11 +1,14 @@
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
+  require('dotenv').config({
+    path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
+  });
 }
 const express = require('express');
 const app = express();
 const db = require('./db');
 const bodyParser = require('body-parser');
 const { router } = require('./routes');
+const jwt = require('jsonwebtoken');
 
 // Database
 db.init();

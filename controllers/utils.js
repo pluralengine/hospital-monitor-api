@@ -1,6 +1,6 @@
 const opencage = require('opencage-api-client');
 
-exports.findCoordinates = function(address) {
+exports.findCoordinates = function (address) {
   return opencage
     .geocode({ q: address })
     .then(results => results.results[0].geometry)
@@ -9,6 +9,6 @@ exports.findCoordinates = function(address) {
     });
 };
 
-exports.createCompatibleAddress = function(hospital) {
+exports.createCompatibleAddress = function (hospital) {
   return `${hospital.name}, ${hospital.areas}, España`;
 };
