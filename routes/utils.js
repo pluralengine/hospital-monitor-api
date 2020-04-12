@@ -9,13 +9,13 @@ exports.authenticateJWT = (req, res, next) => {
     jwt.verify(token, process.env.ACCESSTOKEN, (err, user) => {
       if (err) {
         res.status(403);
-        return res.send('Wrong authentication credentials');
+        return res.send({ error: 'Wrong authentication credentials' });
       }
       req.user = user;
       next();
     });
   } else {
     res.status(403);
-    res.json('Not allowed');
+    res.json({ error: 'Not allowed' });
   }
 };

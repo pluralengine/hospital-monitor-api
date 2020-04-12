@@ -16,11 +16,7 @@ exports.createUser = function (req, res) {
 exports.findUserById = function (req, res) {
   const id = req.params.id;
   User.findByPk(id).then(user => {
-    try {
-      res.status(200);
-      res.json(`User ${user.userid} was found`);
-    } catch (e) {
-      console.error(`Error ${e} happened when trying to find User by ${id}`);
-    }
+    res.status(200);
+    res.json(user);
   });
 };

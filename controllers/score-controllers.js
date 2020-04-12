@@ -2,7 +2,7 @@ const { Hospital, Score } = require('../db/models');
 const Sequelize = require('sequelize');
 
 exports.sendHospitalScore = function (req, res) {
-  const {rate, UserId, HospitalId} = deserializeScore(req.body)
+  const { rate, UserId, HospitalId } = deserializeScore(req.body);
 
   Score.create({
     rate,
@@ -51,9 +51,9 @@ exports.sendHospitalScore = function (req, res) {
         console.error(
           `Error ${e} happened when trying to send a new hospital status.`
         );
-        res.json(
-          `Error happened when trying to send a new hospital status; \n  ${message}`
-        );
+        res.json({
+          error: `Error happened when trying to send a new hospital status; \n  ${message}`,
+        });
       });
   });
 };
