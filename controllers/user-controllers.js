@@ -9,7 +9,7 @@ exports.createUser = function (req, res) {
     role: req.body.role,
   }).then(user => {
     res.status(201);
-    res.json(user);
+    res.json({ ...user.toJSON(), password: undefined });
   });
 };
 

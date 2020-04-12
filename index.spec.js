@@ -26,27 +26,8 @@ describe('/users', () => {
   let hospital = {};
 
   beforeAll(async () => {
-    hospital = await Hospital.create({
-      name: 'Plural Engine Hospital',
-      address: 'Lolipop street',
-      phonenum: 680178921,
-      areas: 'Barcelona',
-      provinces: 'Barcelona',
-      regionsccaa: 'BARCELONA',
-      postcode: '08024',
-      bednum: 100,
-      type: 'PSIQUIÁTRICO',
-      type_of_dependency: 'COMUNIDAD AUTÓNOMA',
-      func_dependency: 'SERVICIO VASCO DE SALUD-OSAKIDETZA',
-      email: 'pluralengine@gmail.com',
-    });
-    user = await User.create({
-      name: 'Marta Colombas',
-      email: 'martacolombas@gmail.com',
-      role: 'Celadora',
-      password: 'pass',
-      HospitalId: hospital.id,
-    });
+    hospital = await createHospital();
+    user = await createUser();
   });
 
   describe('POST', () => {
@@ -62,13 +43,16 @@ describe('/users', () => {
       const res = await request.post(endpoint).send(payload);
 
       expect(res.statusCode).toEqual(201);
-      expect(res.body).toMatchObject({
+      expect(res.body).toEqual({
+        id: expect.any(Number),
         email: 'test@pluralengine.com',
-        HospitalId: hospital.id,
         name: 'Plural Engine Engineer',
-        password: expect.any(String),
         role: 'Engineer',
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        HospitalId: hospital.id,
       });
+      expect(res.body).not.toHaveProperty('password');
     });
   });
 });
@@ -223,12 +207,15 @@ describe('/login', () => {
       const res = await request.post(endpoint).send(payload);
 
       expect(res.statusCode).toEqual(202);
-      expect(res.body).toMatchObject({
-        name: 'Marta Colombas',
-        email: 'martacolombas@gmail.com',
-        role: 'Celadora',
+      expect(res.body).toEqual({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
         token: expect.any(String),
+        hospitalId: user.HospitalId,
       });
+      expect(res.body).not.toHaveProperty('password');
     });
   });
 });

@@ -17,6 +17,8 @@ exports.login = async function (req, res) {
       token: accessToken,
       role: user.role,
       name: user.name,
+      id: user.id,
+      hospitalId: user.HospitalId,
     });
   } else {
     res.status(403);
