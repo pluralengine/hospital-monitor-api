@@ -178,13 +178,54 @@ describe('/hospitals', () => {
         const res = await request.post(endpoint).send(payload);
 
         expect(res.statusCode).toEqual(403);
-        expect(res.body).toEqual('Not allowed');
+        expect(res.body).toEqual({ error: 'Not allowed' });
       });
 
       it('should call findCoordinates', async () => {
         await request.post(endpoint).send(payload);
 
         expect(findCoordinates).not.toHaveBeenCalled();
+      });
+    });
+  });
+});
+
+describe('/hospitals/<id>', () => {
+  const endpoint = '/hospitals';
+  let hospital = {};
+
+  beforeAll(async () => {
+    await Hospital.destroy({ where: {}, truncate: true, cascade: true });
+  });
+
+  describe('GET', () => {
+    beforeEach(async () => {
+      hospital = await createHospital();
+    });
+
+    it('should respond to the GET method', async () => {
+      const res = await request.get(`${endpoint}/${hospital.id}`);
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toEqual({
+        address: 'Lolipop street',
+        areas: 'Barcelona',
+        bedNum: 100,
+        createdAt: expect.any(String),
+        dependencyType: 'COMUNIDAD AUTÓNOMA',
+        email: 'pluralengine@gmail.com',
+        funcDependency: 'SERVICIO VASCO DE SALUD-OSAKIDETZA',
+        geometryLat: '1234',
+        geometryLng: '1234',
+        id: expect.any(Number),
+        name: 'Plural Engine Hospital',
+        phoneNum: '680178921',
+        postcode: 8024,
+        provinces: 'Barcelona',
+        regionsCcaa: 'BARCELONA',
+        status: null,
+        type: 'PSIQUIÁTRICO',
+        updatedAt: expect.any(String),
       });
     });
   });
@@ -275,7 +316,7 @@ describe('/score', () => {
         const res = await request.post(endpoint).send(payload);
 
         expect(res.statusCode).toEqual(403);
-        expect(res.body).toEqual('Not allowed');
+        expect(res.body).toEqual({ error: 'Not allowed' });
       });
     });
   });
