@@ -2,7 +2,7 @@ const supertest = require('supertest');
 const app = require('./index');
 const http = require('http');
 const jwt = require('jsonwebtoken');
-const { User, Hospital, Score } = require('./db/models');
+const { User, Hospital, Score, Pharmacy } = require('./db/models');
 
 jest.mock('./controllers/utils');
 const { findCoordinates } = require('./controllers/utils');
@@ -322,9 +322,73 @@ describe('/score', () => {
   });
 });
 
+describe('/pharmacies', () => {
+  const endpoint = '/pharmacies';
+  let pharmacy = {};
+
+  beforeAll(async () => {
+    await Pharmacy.destroy({ where: {}, truncate: true, cascade: true });
+  });
+
+  describe('GET', () => {
+    beforeEach(async () => {
+      pharmacy = await createPharmacy();
+    });
+
+    afterEach(async () => {
+      await pharmacy.destroy();
+    });
+
+    it('should respond to the GET method', async () => {
+      const res = await request.get(endpoint);
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body.length).toBe(1);
+      expect(res.body[0]).toEqual({
+        id: pharmacy.id,
+        name: 'Plural Engine Pharmacy',
+        centerCode: '1234',
+        address: 'Lolipop street',
+        phoneNum: '680178921',
+        areas: 'Barcelona',
+        postcode: 8024,
+        provinces: 'Barcelona',
+        regionsCcaa: 'BARCELONA',
+        email: 'pluralengine@gmail.com',
+        geometryLat: '1234',
+        geometryLng: '1234',
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        UserId: pharmacy.UserId,
+      });
+    });
+  });
+});
+
 async function generateAccessToken() {
   const user = await createUser();
   return jwt.sign({ email: user.email }, process.env.ACCESSTOKEN);
+}
+
+async function createPharmacy() {
+  const user = await createUser();
+  const findings = await Pharmacy.findOrCreate({
+    where: {
+      name: 'Plural Engine Pharmacy',
+      centerCode: '1234',
+      address: 'Lolipop street',
+      phoneNum: '680178921',
+      areas: 'Barcelona',
+      provinces: 'Barcelona',
+      regionsCcaa: 'BARCELONA',
+      postcode: '08024',
+      email: 'pluralengine@gmail.com',
+      geometryLat: '1234',
+      geometryLng: '1234',
+      UserId: user.id,
+    },
+  });
+  return findings[0];
 }
 
 async function createHospital() {

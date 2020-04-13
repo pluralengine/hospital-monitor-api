@@ -13,13 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       postcode: DataTypes.INTEGER,
       email: DataTypes.STRING,
       geometryLat: DataTypes.STRING,
-      geometryLng: DataTypes.STRING,
-      pharmacyId: DataTypes.INTEGER
-    },
+      geometryLng: DataTypes.STRING    },
     {}
   );
   Pharmacy.associate = function (models) {
-    Pharmacy.hasOne(models.User);
+    Pharmacy.belongsTo(models.User);
     Pharmacy.belongsToMany(models.Product, { through: 'PharmacyProduct' });
   };
   return Pharmacy;
