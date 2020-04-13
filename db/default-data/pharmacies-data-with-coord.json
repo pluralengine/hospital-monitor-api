@@ -1,0 +1,108 @@
+[
+  {
+    "centerType": "E1 - Oficinas de farmacia",
+    "normalizedCenterCode": "0104000359",
+    "centerCode": 18771,
+    "name": "FARMACIA ACUYO IRIARTE, MARIA DEL PILAR",
+    "regionsCcaa": "Andalucía",
+    "provinces": "Almería",
+    "areas": "Almería",
+    "viaType": "CALLE",
+    "address": "CALZADA DE CASTRO",
+    "addressNumber": 32,
+    "postcode": "04006",
+    "email": "",
+    "phoneNum": 950255289,
+    "geodata": [
+      {
+        "address_components": [
+          {
+            "long_name": "32",
+            "short_name": "32",
+            "types": [
+              "street_number"
+            ]
+          },
+          {
+            "long_name": "Calle Calzada de Castro",
+            "short_name": "Calle Calz. de Castro",
+            "types": [
+              "route"
+            ]
+          },
+          {
+            "long_name": "Almería",
+            "short_name": "Almería",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Almería",
+            "short_name": "AL",
+            "types": [
+              "administrative_area_level_2",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Andalucía",
+            "short_name": "AL",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Spain",
+            "short_name": "ES",
+            "types": [
+              "country",
+              "political"
+            ]
+          },
+          {
+            "long_name": "04006",
+            "short_name": "04006",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "Calle Calz. de Castro, 32, 04006 Almería, Spain",
+        "geometry": {
+          "bounds": {
+            "northeast": {
+              "lat": 36.8379301,
+              "lng": -2.4528323
+            },
+            "southwest": {
+              "lat": 36.8378258,
+              "lng": -2.4532489
+            }
+          },
+          "location": {
+            "lat": 36.8378897,
+            "lng": -2.4530555
+          },
+          "location_type": "ROOFTOP",
+          "viewport": {
+            "northeast": {
+              "lat": 36.8392269302915,
+              "lng": -2.451691619708498
+            },
+            "southwest": {
+              "lat": 36.83652896970851,
+              "lng": -2.454389580291502
+            }
+          }
+        },
+        "place_id": "ChIJj8nvffydeg0RcEra6JZxSDc",
+        "types": [
+          "premise"
+        ]
+      }
+    ]
+  }
+]
