@@ -13,7 +13,8 @@ exports.getAllPharmacies = function (req, res) {
 
 exports.updatePharmacyStock = async function (req, res) {
   const { productId, stock } = req.body;
-  const user = await User.findOne({ where: { email: req.user.email } });
+  const { email } =  req.user
+  const user = await User.findOne({ where: { email } });
   const pharmacy = await Pharmacy.findOne({ where: { UserId: user.id } });
   const pharmacyProductStockFindings = await PharmacyProduct.findOrCreate({
     where: { ProductId: productId, PharmacyId: pharmacy.id },
