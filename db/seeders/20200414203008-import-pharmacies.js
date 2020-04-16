@@ -4,7 +4,7 @@ const { Pharmacy } = require('../models');
 const path = require('path');
 const DATA_FILE = path.resolve(
   __dirname,
-  '../default-data/pharmacies-data-with-coord.json'
+  '../default-data/pharmacies-with-coord-data.json'
 );
 module.exports = {
   up: async (queryInterface, Sequelize) => {

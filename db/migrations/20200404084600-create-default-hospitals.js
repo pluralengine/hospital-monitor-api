@@ -1,5 +1,5 @@
 'use strict';
-const data = require('../default-data/hospital-data-with-coord.json');
+const data = require('../default-data/hospital-with-coord-data.json');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {

@@ -5,7 +5,7 @@ const client = new Client({});
 const path = require('path');
 const targetFile = path.resolve(
   __dirname,
-  '../default-data/pharmacies-data-with-coord.json'
+  '../default-data/pharmacies-with-coord-data.json'
 );
 
 module.exports = {
@@ -36,8 +36,7 @@ module.exports = {
           const response = await client.geocode({
             params: {
               address: `${pharmacyData.viaType} ${pharmacyData.address} ${pharmacyData.addressNumber}, ${pharmacyData.areas}`,
-              //TODO: remove key and add an env variable
-              key: 'AIzaSyAdwej3jU_EWwfRCFpHiKFuhw7wVFAvcCM',
+              key: process.env.GOOGLE_KEY,
             },
             timeout: 2000, // milliseconds
           });
