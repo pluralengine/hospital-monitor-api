@@ -2,7 +2,7 @@ const supertest = require('supertest');
 const app = require('./index');
 const http = require('http');
 const jwt = require('jsonwebtoken');
-const { User, Hospital, Score, Pharmacy } = require('./db/models');
+const { User, Hospital, Score, Pharmacy, Product } = require('./db/models');
 
 jest.mock('./controllers/utils');
 const { findCoordinates } = require('./controllers/utils');
@@ -365,6 +365,60 @@ describe('/pharmacies', () => {
   });
 });
 
+describe('/pharmacies/stock', () => {
+  const endpoint = '/pharmacies/stock';
+  let pharmacy = {};
+  let product = {};
+
+  beforeAll(async () => {
+    await Pharmacy.destroy({ where: {}, truncate: true, cascade: true });
+  });
+
+  describe('PUT', () => {
+    beforeEach(async () => {
+      pharmacy = await createPharmacy();
+      product = await createProduct();
+    });
+
+    afterEach(async () => {
+      await pharmacy.destroy();
+    });
+
+    it('should update the pharmacy stock', async () => {
+      const accessToken = await generateAccessToken();
+      const payload = {
+        productId: product.id,
+        stock: true,
+      };
+      const res = await request
+        .put(endpoint)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send(payload);
+
+      // expect(res.statusCode).toBe(200);
+      expect(res.body).toEqual({
+        id: pharmacy.id,
+        name: 'Plural Engine Pharmacy',
+        centerCode: '1234',
+        address: 'Lolipop street',
+        phoneNum: '680178921',
+        areas: 'Barcelona',
+        postcode: 8024,
+        provinces: 'Barcelona',
+        regionsCcaa: 'BARCELONA',
+        email: 'pluralengine@gmail.com',
+        geometryLat: '1234',
+        geometryLng: '1234',
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        UserId: pharmacy.UserId,
+        products: [product.id],
+      });
+    });
+  });
+});
+
+
 async function generateAccessToken() {
   const user = await createUser();
   return jwt.sign({ email: user.email }, process.env.ACCESSTOKEN);
@@ -386,6 +440,15 @@ async function createPharmacy() {
       geometryLat: '1234',
       geometryLng: '1234',
       UserId: user.id,
+    },
+  });
+  return findings[0];
+}
+async function createProduct() {
+  const findings = await Product.findOrCreate({
+    where: {
+      name: 'Satisfier 3000',
+      photo: 'some/photos.png',
     },
   });
   return findings[0];
