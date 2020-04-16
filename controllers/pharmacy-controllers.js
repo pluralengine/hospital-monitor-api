@@ -1,4 +1,4 @@
-const { User, Pharmacy, PharmacyProduct } = require('../db/models');
+const { User, Pharmacy, PharmacyProduct, Product } = require('../db/models');
 
 exports.getAllPharmacies = function (req, res) {
   Pharmacy.findAll().then(pharmacies => {
@@ -35,19 +35,21 @@ exports.getPharmacyById = async function (req, res) {
   const { id } = req.params;
   let simplifiedPharmacy;
   Pharmacy.findAll({
-    include: [{ Model: PharmacyProduct, as: 'products' }],
+    include: [{ model: Product }],
     where: {
       id,
     },
   }).then(pharmacy => {
+    console.log(pharmacy);
     try {
       simplifiedPharmacy = {
-        id: pharmacy.id,
-        name: pharmacy.name,
-        address: `${pharmacy.address}, ${pharmacy.areas}, ${pharmacy.provinces}`,
-        products: pharmacy.products,
-        geometryLng: pharmacy.geometryLng,
-        geometryLat: pharmacy.geometryLat,
+        id: pharmacy[0].id,
+        name: pharmacy[0].name,
+        address: `${pharmacy[0].address}, ${pharmacy[0].areas}, ${pharmacy[0].provinces}`,
+        products: pharmacy[0].Products,
+        geometryLng: pharmacy[0].geometryLng,
+        geometryLat: pharmacy[0].geometryLat,
+        updatedAt: pharmacy[0].updatedAt,
       };
       res.status(200);
       res.json(simplifiedPharmacy);
