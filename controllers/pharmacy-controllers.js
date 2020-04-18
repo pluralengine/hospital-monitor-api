@@ -77,3 +77,27 @@ exports.getPharmacyById = async function (req, res) {
     res.json({ error: `${e}` });
   }
 };
+
+exports.getUsersPharmacy = async function (req, res) {
+  const { email } = req.user;
+  const user = await User.findOne({ where: { email } });
+  const pharmacy = await Pharmacy.findOne({
+    where: { UserId: user.id },
+  });
+  res.status(200);
+  res.json(
+    await Pharmacy.findByPk(pharmacy.id, {
+      include: [
+        {
+          model: Product,
+          as: 'products',
+          attributes: ['id', 'name'],
+          through: {
+            model: PharmacyProduct,
+            attributes: [],
+          },
+        },
+      ],
+    })
+  );
+};

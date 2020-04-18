@@ -9,3 +9,8 @@ router.put(
   authenticateJWT,
   pharmacyControllers.updateUserPharmacyStock
 );
+router.get(
+  '/user/pharmacy',
+  authenticateJWT,
+  pharmacyControllers.getUsersPharmacy
+);

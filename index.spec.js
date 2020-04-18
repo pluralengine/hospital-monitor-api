@@ -418,6 +418,55 @@ describe('/pharmacies/<id>', () => {
   });
 });
 
+describe('/user/pharmacy', () => {
+  const endpoint = '/user/pharmacy';
+  let pharmacy = {};
+  let product = {};
+
+  beforeAll(async () => {
+    await Pharmacy.destroy({ where: {}, truncate: true, cascade: true });
+  });
+
+  describe('GET', () => {
+    beforeEach(async () => {
+      pharmacy = await createPharmacy();
+      product = await createProduct();
+    });
+
+    afterEach(async () => {
+      await pharmacy.destroy();
+    });
+
+    it("should return the user's pharmacy information", async () => {
+      const accessToken = await generateAccessToken();
+      await pharmacy.addProduct(product);
+      const res = await request
+        .get(endpoint)
+        .set('Authorization', `Bearer ${accessToken}`);
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toEqual({
+        id: pharmacy.id,
+        name: 'Plural Engine Pharmacy',
+        centerCode: '1234',
+        address: 'Lolipop street',
+        phoneNum: '680178921',
+        areas: 'Barcelona',
+        postcode: 8024,
+        provinces: 'Barcelona',
+        regionsCcaa: 'BARCELONA',
+        email: 'pluralengine@gmail.com',
+        geometryLat: '1234',
+        geometryLng: '1234',
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        UserId: pharmacy.UserId,
+        products: [{ id: product.id, name: product.name }],
+      });
+    });
+  });
+});
+
 describe('/user/pharmacy/stock', () => {
   const endpoint = '/user/pharmacy/stock';
   let pharmacy = {};
