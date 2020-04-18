@@ -20,6 +20,44 @@ afterEach(done => {
   server.close(done);
 });
 
+describe('/user/pharmacy', () => {
+  const endpoint = '/user/pharmacy';
+  let pharmacy = {};
+
+  beforeAll(async () => {
+    pharmacy = await createPharmacy();
+  });
+
+  describe('POST', () => {
+    it('should create a new user as pharmacy owner', async () => {
+      console.log(pharmacy.centerCode);
+      const payload = {
+        email: 'test@pluralengine.com',
+        pharmacyId: pharmacy.id,
+        centerCode: String(pharmacy.centerCode),
+        name: 'Plural Engine Engineer',
+        password: 'pluralengine',
+      };
+
+      const res = await request.post(endpoint).send(payload);
+      await pharmacy.reload();
+
+      expect(res.statusCode).toEqual(201);
+      expect(res.body).toEqual({
+        id: expect.any(Number),
+        email: 'test@pluralengine.com',
+        name: 'Plural Engine Engineer',
+        role: 'Pharmacy Owner',
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        HospitalId: null,
+      });
+      expect(res.body).not.toHaveProperty('password');
+      expect(pharmacy.UserId).toBe(res.body.id);
+    });
+  });
+});
+
 describe('/users', () => {
   const endpoint = '/users';
   let user = {};
