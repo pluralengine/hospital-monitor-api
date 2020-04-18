@@ -4,6 +4,7 @@ const userControllers = require('./user-controllers');
 const scoreControllers = require('./score-controllers');
 const loginControllers = require('./login-controllers');
 const provinceControllers = require('./province-controllers');
+const productControllers = require('./product-controllers');
 
 module.exports = {
   hospitalControllers,
@@ -12,4 +13,5 @@ module.exports = {
   scoreControllers,
   loginControllers,
   provinceControllers,
+  productControllers,
 };

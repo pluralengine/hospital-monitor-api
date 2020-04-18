@@ -583,6 +583,40 @@ describe('/provinces', () => {
   });
 });
 
+describe('/products', () => {
+  const endpoint = '/products';
+  let product = {};
+
+  beforeAll(async () => {
+    await Product.destroy({ where: {}, truncate: true, cascade: true });
+  });
+
+  describe('GET', () => {
+    beforeEach(async () => {
+      product = await createProduct();
+    });
+
+    afterEach(async () => {
+      await product.destroy();
+    });
+
+    it('should retrieve all the products', async () => {
+      const res = await request.get(endpoint);
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toEqual([
+        {
+          id: product.id,
+          name: 'Satisfier 3000',
+          photo: 'some/photos.png',
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+        },
+      ]);
+    });
+  });
+});
+
 async function generateAccessToken() {
   const user = await createUser();
   return jwt.sign({ email: user.email }, process.env.ACCESSTOKEN);
