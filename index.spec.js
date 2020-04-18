@@ -30,7 +30,6 @@ describe('/user/pharmacy', () => {
 
   describe('POST', () => {
     it('should create a new user as pharmacy owner', async () => {
-      console.log(pharmacy.centerCode);
       const payload = {
         email: 'test@pluralengine.com',
         pharmacyId: pharmacy.id,
@@ -363,6 +362,7 @@ describe('/score', () => {
 describe('/pharmacies', () => {
   const endpoint = '/pharmacies';
   let pharmacy = {};
+  let product = {};
 
   beforeAll(async () => {
     await Pharmacy.destroy({ where: {}, truncate: true, cascade: true });
@@ -371,13 +371,17 @@ describe('/pharmacies', () => {
   describe('GET', () => {
     beforeEach(async () => {
       pharmacy = await createPharmacy();
+      product = await createProduct();
+      await pharmacy.addProduct(product);
+      pharmacy.reload();
     });
 
     afterEach(async () => {
       await pharmacy.destroy();
+      await product.destroy();
     });
 
-    it('should respond to the GET method', async () => {
+    it('should return all pharmacies', async () => {
       const res = await request.get(endpoint);
 
       expect(res.statusCode).toBe(200);
@@ -385,20 +389,41 @@ describe('/pharmacies', () => {
       expect(res.body[0]).toEqual({
         id: pharmacy.id,
         name: 'Plural Engine Pharmacy',
-        centerCode: '1234',
         address: 'Lolipop street',
         phoneNum: '680178921',
-        areas: 'Barcelona',
-        postcode: 8024,
-        provinces: 'Barcelona',
-        regionsCcaa: 'BARCELONA',
-        email: 'pluralengine@gmail.com',
         geometryLat: '1234',
         geometryLng: '1234',
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
-        UserId: pharmacy.UserId,
+        products: [
+          {
+            id: product.id,
+            name: product.name,
+          },
+        ],
       });
+    });
+
+    it('should retrieve all the pharmacies from a given province', async () => {
+      await pharmacy.addProduct();
+      const endpoint = `/pharmacies?provinces=${pharmacy.provinces}`;
+      const res = await request.get(endpoint);
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toEqual([
+        {
+          id: pharmacy.id,
+          name: 'Plural Engine Pharmacy',
+          address: 'Lolipop street',
+          phoneNum: '680178921',
+          geometryLat: '1234',
+          geometryLng: '1234',
+          products: [
+            {
+              id: product.id,
+              name: product.name,
+            },
+          ],
+        },
+      ]);
     });
   });
 });
@@ -587,6 +612,14 @@ describe('/user/pharmacy/stock', () => {
         UserId: pharmacy.UserId,
         products: [],
       });
+    });
+
+    it('should return empty results if the province is not a valid province', async () => {
+      const endpoint = `/pharmacies?provinces=whatever`;
+      const res = await request.get(endpoint);
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toEqual([]);
     });
 
     it('should fail if the product does not exist', async () => {
