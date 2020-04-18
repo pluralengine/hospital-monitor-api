@@ -1,5 +1,5 @@
 'use strict';
-const { PharmacyProduct } = require('./index');
+
 module.exports = (sequelize, DataTypes) => {
   const Pharmacy = sequelize.define(
     'Pharmacy',
@@ -21,24 +21,12 @@ module.exports = (sequelize, DataTypes) => {
 
   Pharmacy.associate = function (models) {
     Pharmacy.belongsTo(models.User);
-    Pharmacy.belongsToMany(models.Product, { through: 'PharmacyProduct' });
-  };
-
-  Pharmacy.prototype.updateStock = async function (productId, stock = true) {
-    const pharmacyId = this.id;
-    PharmacyProduct.findAll({ where: { pharmacyId, productId } }).then(
-      pharmacyProducts => {
-        if (!pharmacyProducts.length) {
-          PharmacyProduct.create({
-            PharmacyId,
-            ProductId,
-            stock,
-          });
-        } else {
-          pharmacyProducts.update({ stock });
-        }
-      }
-    );
+    Pharmacy.belongsToMany(models.Product, {
+      through: 'PharmacyProduct',
+      as: 'products',
+      foreignKey: 'PharmacyId',
+      otherKey: 'ProductId',
+    });
   };
 
   return Pharmacy;
