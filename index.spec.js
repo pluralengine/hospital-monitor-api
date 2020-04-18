@@ -364,7 +364,6 @@ describe('/pharmacies', () => {
     });
   });
 });
-
 describe('/pharmacies/stock', () => {
   const endpoint = '/pharmacies/stock';
   let pharmacy = {};
@@ -395,7 +394,7 @@ describe('/pharmacies/stock', () => {
         .set('Authorization', `Bearer ${accessToken}`)
         .send(payload);
 
-      // expect(res.statusCode).toBe(200);
+      expect(res.statusCode).toBe(200);
       expect(res.body).toEqual({
         id: pharmacy.id,
         name: 'Plural Engine Pharmacy',
@@ -418,6 +417,18 @@ describe('/pharmacies/stock', () => {
   });
 });
 
+describe('/provinces', () => {
+  const endpoint = '/provinces';
+  const provinces = require('./mocks/provinces.js');
+
+  it('should return the list of provinces for the pharmacies', async () => {
+    const res = await request.get(endpoint);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.length).toBe(52);
+    expect(res.body).toEqual(provinces);
+  });
+});
 
 async function generateAccessToken() {
   const user = await createUser();
@@ -444,6 +455,7 @@ async function createPharmacy() {
   });
   return findings[0];
 }
+
 async function createProduct() {
   const findings = await Product.findOrCreate({
     where: {
