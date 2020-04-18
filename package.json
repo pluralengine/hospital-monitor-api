@@ -9,7 +9,8 @@
     "db:migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run db:migrate",
     "db:seed:pharmacies": "npx sequelize-cli db:seed:all",
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000 --detectOpenHandles",
-    "test:watch": "npm test -- --watch",
+    "test:migrate:undo": "cross-env NODE_ENV=test npx sequelize-cli db:migrate:undo:all",
+    "test:watch": "cross-env NODE_ENV=test npm test -- --watch",
     "pretest": "cross-env NODE_ENV=test npm run db:migrate:reset"
   },
   "dependencies": {

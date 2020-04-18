@@ -1,13 +1,28 @@
 const { User, Pharmacy, PharmacyProduct, Product } = require('../db/models');
 
-exports.getAllPharmacies = function (req, res) {
-  Pharmacy.findAll().then(pharmacies => {
-    try {
-      res.json(pharmacies);
-    } catch (e) {
-      console.error(`Error ${e} happened when trying to fetch pharmacies`);
-    }
+exports.getAllPharmacies = async function (req, res) {
+  const pharmacies = await Pharmacy.findAll({
+    where: { ...req.query },
+    include: {
+      model: Product,
+      as: 'products',
+      attributes: ['id', 'name'],
+      through: {
+        model: PharmacyProduct,
+        attributes: [],
+      }
+    },
+    attributes: [
+      'id',
+      'name',
+      'address',
+      'phoneNum',
+      'geometryLat',
+      'geometryLng',
+    ],
+
   });
+  res.json(pharmacies);
 };
 
 exports.updateUserPharmacyStock = async function (req, res) {
