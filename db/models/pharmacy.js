@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const Pharmacy = sequelize.define(
     'Pharmacy',
@@ -13,12 +14,20 @@ module.exports = (sequelize, DataTypes) => {
       postcode: DataTypes.INTEGER,
       email: DataTypes.STRING,
       geometryLat: DataTypes.STRING,
-      geometryLng: DataTypes.STRING    },
+      geometryLng: DataTypes.STRING,
+    },
     {}
   );
+
   Pharmacy.associate = function (models) {
     Pharmacy.belongsTo(models.User);
-    Pharmacy.belongsToMany(models.Product, { through: 'PharmacyProduct' });
+    Pharmacy.belongsToMany(models.Product, {
+      through: 'PharmacyProduct',
+      as: 'products',
+      foreignKey: 'PharmacyId',
+      otherKey: 'ProductId',
+    });
   };
+
   return Pharmacy;
 };
