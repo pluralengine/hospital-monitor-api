@@ -425,6 +425,15 @@ describe('/pharmacies', () => {
         },
       ]);
     });
+
+    it('should return empty results if the province is not a valid province', async () => {
+      const endpoint = `/pharmacies?provinces=whatever`;
+      const res = await request.get(endpoint);
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toEqual([]);
+    });
+
   });
 });
 
@@ -612,14 +621,6 @@ describe('/user/pharmacy/stock', () => {
         UserId: pharmacy.UserId,
         products: [],
       });
-    });
-
-    it('should return empty results if the province is not a valid province', async () => {
-      const endpoint = `/pharmacies?provinces=whatever`;
-      const res = await request.get(endpoint);
-
-      expect(res.statusCode).toBe(200);
-      expect(res.body).toEqual([]);
     });
 
     it('should fail if the product does not exist', async () => {
