@@ -772,64 +772,6 @@ async function createHospital() {
   return findings[0];
 }
 
-async function createMultipleHospitals() {
-  const hospital1 = await Hospital.findOrCreate({
-    where: {
-      name: 'Plural Engine Hospital',
-      address: 'Lolipop street',
-      phoneNum: '680178921',
-      areas: 'Barcelona',
-      provinces: 'Barcelona',
-      regionsCcaa: 'BARCELONA',
-      postcode: '08024',
-      bedNum: 100,
-      type: 'PSIQUIÁTRICO',
-      dependencyType: 'COMUNIDAD AUTÓNOMA',
-      funcDependency: 'SERVICIO VASCO DE SALUD-OSAKIDETZA',
-      email: 'pluralengine@gmail.com',
-      geometryLat: '1234',
-      geometryLng: '1234',
-    },
-  });
-  const hospital2 = await Hospital.findOrCreate({
-    where: {
-      name: 'Plural Engine Hospital',
-      address: 'Lolipop street',
-      phoneNum: '680178921',
-      areas: 'Capdepera',
-      provinces: 'Barcelona',
-      regionsCcaa: 'BARCELONA',
-      postcode: '08024',
-      bedNum: 100,
-      type: 'PSIQUIÁTRICO',
-      dependencyType: 'COMUNIDAD AUTÓNOMA',
-      funcDependency: 'SERVICIO VASCO DE SALUD-OSAKIDETZA',
-      email: 'pluralengine@gmail.com',
-      geometryLat: '1234',
-      geometryLng: '1234',
-    },
-  });
-  const hospital3 = await Hospital.findOrCreate({
-    where: {
-      name: 'Plural Engine Hospital',
-      address: 'Lolipop street',
-      phoneNum: '680178921',
-      areas: 'Deifontes',
-      provinces: 'Barcelona',
-      regionsCcaa: 'BARCELONA',
-      postcode: '08024',
-      bedNum: 100,
-      type: 'PSIQUIÁTRICO',
-      dependencyType: 'COMUNIDAD AUTÓNOMA',
-      funcDependency: 'SERVICIO VASCO DE SALUD-OSAKIDETZA',
-      email: 'pluralengine@gmail.com',
-      geometryLat: '1234',
-      geometryLng: '1234',
-    },
-  });
-  return [hospital1, hospital2, hospital3];
-}
-
 async function createUser() {
   const hospital = await createHospital();
   const user = await User.findOne({
