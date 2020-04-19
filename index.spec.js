@@ -433,7 +433,6 @@ describe('/pharmacies', () => {
       expect(res.statusCode).toBe(200);
       expect(res.body).toEqual([]);
     });
-
   });
 });
 
@@ -652,6 +651,32 @@ describe('/provinces', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body.length).toBe(52);
     expect(res.body).toEqual(provinces);
+  });
+});
+
+describe('/provinces/areas', () => {
+  const endpoint = '/provinces/areas';
+  let pharmacy = {};
+
+  beforeAll(async () => {
+    await Pharmacy.destroy({ where: {}, truncate: true, cascade: true });
+  });
+
+  describe('GET', () => {
+    beforeEach(async () => {
+      pharmacy = await createPharmacy();
+    });
+
+    afterEach(async () => {
+      await pharmacy.destroy();
+    });
+
+    it('should return the list of areas for the pharmacies', async () => {
+      const res = await request.get(endpoint);
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body[0]).toEqual(pharmacy.areas);
+    });
   });
 });
 
