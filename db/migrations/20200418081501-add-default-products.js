@@ -5,19 +5,19 @@ module.exports = {
     return queryInterface.bulkInsert('Products', [
       {
         name: 'Mascarilla',
-        photo: '',
+        photo: 'mask',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         name: 'Desinfectante de manos',
-        photo: '',
+        photo: 'handSanitizer',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         name: 'Guantes de látex',
-        photo: '',
+        photo: 'gloves',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
