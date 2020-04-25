@@ -47,6 +47,8 @@ exports.createPharmacyUser = async function (req, res) {
   res.json({
     ...user.toJSON(),
     password: undefined,
+    HospitalId: undefined,
+    pharmacyId: pharmacy.id
   });
 };
 

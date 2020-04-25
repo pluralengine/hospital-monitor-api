@@ -8,6 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express');
 const app = express();
+const cors = require('cors')
 const db = require('./db');
 const bodyParser = require('body-parser');
 const { router } = require('./routes');
@@ -17,6 +18,8 @@ db.init();
 
 // Middlewares
 app.use(bodyParser.json());
+app.use(cors());
+app.options("*", cors())
 app.use(router);
 
 // Listen to port

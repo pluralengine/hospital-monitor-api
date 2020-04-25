@@ -49,7 +49,7 @@ describe('/user/pharmacy', () => {
         role: 'Pharmacy Owner',
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
-        HospitalId: null,
+        pharmacyId: pharmacy.id,
       });
       expect(res.body).not.toHaveProperty('password');
       expect(pharmacy.UserId).toBe(res.body.id);
