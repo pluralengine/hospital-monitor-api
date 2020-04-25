@@ -17,6 +17,7 @@ exports.getAllPharmacies = async function (req, res) {
       'name',
       'address',
       'phoneNum',
+      'areas',
       'geometryLat',
       'geometryLng',
     ],

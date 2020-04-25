@@ -391,6 +391,7 @@ describe('/pharmacies', () => {
         name: 'Plural Engine Pharmacy',
         address: 'Lolipop street',
         phoneNum: '680178921',
+        areas: 'Barcelona',
         geometryLat: '1234',
         geometryLng: '1234',
         products: [
@@ -414,6 +415,7 @@ describe('/pharmacies', () => {
           name: 'Plural Engine Pharmacy',
           address: 'Lolipop street',
           phoneNum: '680178921',
+          areas: 'Barcelona',
           geometryLat: '1234',
           geometryLng: '1234',
           products: [
