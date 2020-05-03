@@ -19,7 +19,7 @@ db.init();
 // Middlewares
 app.use(bodyParser.json());
 app.use(cors());
-app.options("*", cors())
+// app.options("*", cors())
 app.use(router);
 
 // Listen to port
