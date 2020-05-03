@@ -41,14 +41,14 @@ exports.createPharmacyUser = async function (req, res) {
   });
 
   pharmacy.UserId = user.id;
-  pharmacy.save();
+  await pharmacy.save();
 
   res.status(201);
   res.json({
     ...user.toJSON(),
     password: undefined,
     HospitalId: undefined,
-    pharmacyId: pharmacy.id
+    pharmacyId: pharmacy.id,
   });
 };
 
