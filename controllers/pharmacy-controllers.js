@@ -41,9 +41,9 @@ exports.updateUserPharmacyStock = async function (req, res) {
     }
 
     if (stock) {
-      await pharmacy.addProduct(product);
-    } else {
       await pharmacy.removeProduct(product);
+    } else {
+      await pharmacy.addProduct(product);
     }
 
     await pharmacy.changed("updatedAt", true);

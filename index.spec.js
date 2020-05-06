@@ -559,11 +559,11 @@ describe('/user/pharmacy/stock', () => {
       await pharmacy.destroy();
     });
 
-    it('should add a product to the pharmacy stock', async () => {
+    it('should report an out of stock product in the pharmacy', async () => {
       const accessToken = await generateAccessToken();
       const payload = {
         productId: product.id,
-        stock: true,
+        stock: false,
       };
       const res = await request
         .put(endpoint)
@@ -591,11 +591,11 @@ describe('/user/pharmacy/stock', () => {
       });
     });
 
-    it('should remove a product from the pharmacy stock', async () => {
+    it('should remove a product from out of stock product list from the pharmacy', async () => {
       const accessToken = await generateAccessToken();
       const payload = {
         productId: product.id,
-        stock: false,
+        stock: true,
       };
       await pharmacy.addProduct(product);
       const res = await request
