@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 exports.login = async function (req, res) {
   const { email, password } = req.body;
   const user = await User.findOne({ where: { email } });
-
   if (user && user.validPassword(password)) {
     const accessToken = jwt.sign(
       { email: user.email },
