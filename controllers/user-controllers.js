@@ -33,7 +33,6 @@ exports.createPharmacyUser = async function (req, res) {
   });
 
   pharmacy.UserId = user.id;
-  pharmacy.centerCode = String(req.body.centerCode);
   await pharmacy.save();
 
   res.status(201);
