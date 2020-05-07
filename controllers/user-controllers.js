@@ -24,14 +24,6 @@ exports.createPharmacyUser = async function (req, res) {
     return;
   }
 
-  if (pharmacy.centerCode !== req.body.centerCode) {
-    res.status(400);
-    res.json({
-      error: 'El código autonómico del centro no es correcto',
-    });
-    return;
-  }
-
   const user = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -41,6 +33,7 @@ exports.createPharmacyUser = async function (req, res) {
   });
 
   pharmacy.UserId = user.id;
+  pharmacy.centerCode = String(req.body.centerCode);
   await pharmacy.save();
 
   res.status(201);
