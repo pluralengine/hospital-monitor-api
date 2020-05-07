@@ -15,11 +15,20 @@ exports.createUser = function (req, res) {
 
 exports.createPharmacyUser = async function (req, res) {
   const pharmacy = await Pharmacy.findByPk(req.body.pharmacyId);
+  console.log('hear');
 
   if (!pharmacy) {
     res.status(400);
     res.json({
       error: `Pharmacy with id ${req.body.pharmacyId} does not exists`,
+    });
+    return;
+  }
+
+  if (pharmacy.UserId) {
+    res.status(400);
+    res.json({
+      error: `La farmacia ya ha sido reclamada por otro usuario. Por favor, contacta con pluralengine@gmail.com.`,
     });
     return;
   }
@@ -34,6 +43,7 @@ exports.createPharmacyUser = async function (req, res) {
 
   pharmacy.UserId = user.id;
   await pharmacy.save();
+  console.log('hear4');
 
   res.status(201);
   res.json({
