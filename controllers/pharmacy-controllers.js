@@ -46,7 +46,7 @@ exports.updateUserPharmacyStock = async function (req, res) {
       await pharmacy.addProduct(product);
     }
 
-    await pharmacy.changed("updatedAt", true);
+    await pharmacy.changed('updatedAt', true);
     await pharmacy.save();
 
     res.json(
@@ -111,6 +111,28 @@ exports.getUsersPharmacy = async function (req, res) {
   const pharmacy = await Pharmacy.findOne({
     where: { UserId: user.id },
   });
+
+  if (!pharmacy) {
+    res.status(500);
+    const errorMessage = `The user ${JSON.stringify(
+      user.toJSON(),
+      null,
+      2
+    )} doesn't have a pharmacy attached`;
+
+    res.status(500);
+    res.json({ error: errorMessage });
+    res.send();
+
+    throw Error(
+      `The user ${JSON.stringify(
+        user.toJSON(),
+        null,
+        2
+      )} doesn't have a pharmacy attached`
+    );
+  }
+
   res.status(200);
   res.json(
     await Pharmacy.findByPk(pharmacy.id, {
